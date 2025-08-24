@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
       photo: 'profile_photo.png' // Direct file path
     },
     experiences: [
-      { id: `exp-${Date.now()}-1`, title: 'Supportledare', company: 'Teknikmagasinet', years: '2020 - Nuvarande', desc: 'Ledde ett team på 15 supportmedarbetare, ökade kundnöjdheten med 25%\nImplementerade ett nytt ticketing-system, minskade svarstider med 30%', logo: 'teknikmagasinet.png' },
-      { id: `exp-${Date.now()}-2`, title: 'IT-Specialist', company: 'Keolis', years: '2016–2020', desc: 'Hanterade nätverksunderhåll för 500+ användare, minskade driftstopp med 15%\nUtbildade 200+ anställda i IT-säkerhet', logo: 'keolis.png' },
-      { id: `exp-${Date.now()}-3`, title: 'Junior Tekniker', company: 'Ericsson', years: '2012–2016', desc: 'Stödde hårdvaruinstallationer, förbättrade effektivitet med 20%\nSamarbetade med ingenjörer för att lösa komplexa fel', logo: 'ericsson.png' }
+      { id: `exp-${Date.now()}-1`, title: 'Supportledare', company: 'Teknikmagasinet', years: '2020 - Nuvarande', desc: 'Ledde ett team på 15 supportmedarbetare, ökade kundnöjdheten med 25%\nImplementerade ett nytt ticketing-system, minskade svarstider med 30%', logo: 'teknikmagasinet.jpg' },
+      { id: `exp-${Date.now()}-2`, title: 'IT-Specialist', company: 'Keolis', years: '2016–2020', desc: 'Hanterade nätverksunderhåll för 500+ användare, minskade driftstopp med 15%\nUtbildade 200+ anställda i IT-säkerhet', logo: 'keolis.jpg' },
+      { id: `exp-${Date.now()}-3`, title: 'Junior Tekniker', company: 'Ericsson', years: '2012–2016', desc: 'Stödde hårdvaruinstallationer, förbättrade effektivitet med 20%\nSamarbetade med ingenjörer för att lösa komplexa fel', logo: 'ericsson.jpg' }
     ],
     education: [{ id: `edu-${Date.now()}-1`, degree: "Kandidatexamen i datavetenskap", school: "KTH, Stockholm", years: "2009-2012" }],
     skills: ['Ledarskap', 'IT-Support', 'Projektledning', 'Kundservice'],
