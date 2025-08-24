@@ -3,19 +3,19 @@ document.addEventListener('DOMContentLoaded', () => {
   let cvData = {
     personal: {
       name: 'Richard Reuterkloo',
-      email: 'richard@reuterkloo.com',
+      email: 'richard@demo.com',
       phone: '070-1234567',
       profile: 'Engagerad och mångsidig professionell med över 10 års erfarenhet inom teknik och kundsupport. Stark förmåga att leda projekt, förbättra processer och leverera resultat i dynamiska miljöer. Passionerad för innovation och kontinuerlig utveckling.',
       photo: 'profile_photo.png' // Direct file path
     },
     experiences: [
-      { id: `exp-${Date.now()}-1`, title: 'Supportledare', company: 'Teknikmagasinet', years: '2020 - Nuvarande', desc: 'Ledde ett team på 15 supportmedarbetare, ökade kundnöjdheten med 25%\nImplementerade ett nytt ticketing-system, minskade svarstider med 30%', logo: 'teknikmagasinet_logo.jpg' },
-      { id: `exp-${Date.now()}-2`, title: 'IT-Specialist', company: 'Keolis', years: '2016–2020', desc: 'Hanterade nätverksunderhåll för 500+ användare, minskade driftstopp med 15%\nUtbildade 200+ anställda i IT-säkerhet', logo: 'keolis_logo.jpg' },
-      { id: `exp-${Date.now()}-3`, title: 'Junior Tekniker', company: 'Ericsson', years: '2012–2016', desc: 'Stödde hårdvaruinstallationer, förbättrade effektivitet med 20%\nSamarbetade med ingenjörer för att lösa komplexa fel', logo: 'ericsson_logo.jpg' }
+      { id: `exp-${Date.now()}-1`, title: 'Systemtekniker', company: 'Trafikverket', years: '2021 - Nuvarande', desc: 'Tillhandahålla 3:e linjens support för digitala kommunikations- och samarbetsverktyg.\nSäkerställer hög kvalitet genom effektiv kundservice, teknisk problemlösning och självständiga beslut utifrån mätbara resultat.', logo: 'trafikverket_100.jpg' },
+      { id: `exp-${Date.now()}-2`, title: 'Systemtekniker', company: 'CGI', years: '2014–2021', desc: 'Tillhandahålla 3:e linjens support för digitala kommunikations- och samarbetsverktyg.\nSäkerställer hög kvalitet genom effektiv kundservice, teknisk problemlösning och självständiga beslut utifrån mätbara resultat.', logo: 'cgi_100.jpg' },
+      { id: `exp-${Date.now()}-3`, title: 'Teknisk supportspecialist', company: 'Hewlett-Packard', years: '2011–2013', desc: 'Stödde hårdvaruinstallationer, förbättrade effektivitet med 20%\nSamarbetade med ingenjörer för att lösa komplexa fel', logo: 'hewlett_100.jpg' }
     ],
-    education: [{ id: `edu-${Date.now()}-1`, degree: "Kandidatexamen i datavetenskap", school: "KTH, Stockholm", years: "2009-2012" }],
-    skills: ['Ledarskap', 'IT-Support', 'Projektledning', 'Kundservice'],
-    certs: ['IT-Säkerhetscertifiering', 'Projektledning'],
+    education: [{ id: `edu-${Date.now()}-1`, degree: "Kandidatexamen i datavetenskap", school: "Demo Universitetet, Stockholm", years: "2008-2011" }],
+    skills: ['Ledarskap', 'Support', 'Projektledning', 'Applikationer', 'Drift', 'Service'],
+    certs: ['IT-Säkerhetscertifiering', 'Projektledning', 'ITIL', 'Microsoft Exchange', 'Pexip', 'Skype for Business'],
     languages: ['Svenska (Modersmål)', 'Engelska (C1)']
   };
 
