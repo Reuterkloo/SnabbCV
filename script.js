@@ -2,21 +2,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // ======== INITIAL DATA & STATE ========
   let cvData = {
     personal: {
-      name: 'Richard Reuterkloo', // Default name
+      name: 'Richard Reuterkloo',
       email: 'richard@demo.com',
       phone: '070-1234567',
       linkedin: 'https://linkedin.com/in/richard-reuterkloo',
-      profile: 'Engagerad och mångsidig professionell med över 10 års erfarenhet inom teknik och kundsupport. Stark förmåga att leda projekt, förbättra processer och leverera resultat i dynamiska miljöer. Passionerad för innovation och kontinuerlig utveckling.',
+      profile: 'Välkommen! Här kan du skapa ditt CV helt gratis med hjälp av min personliga mall. Jag har tagit fram den för att underlätta för dig att presentera din erfarenhet och dina styrkor på bästa sätt. Anpassa den enkelt, och jag hoppas att den hjälper dig att ta ett viktigt steg mot din nästa anställning!',
       photo: 'profile_photo.png'
     },
     experiences: [
-      { id: `exp-${Date.now()}-1`, title: 'Systemtekniker', company: 'Trafikverket', years: '2021 - Nuvarande', desc: 'Tillhandahålla 3:e linjens support för digitala kommunikations- och samarbetsverktyg.\nSäkerställer hög kvalitet genom effektiv kundservice, teknisk problemlösning och självständiga beslut utifrån mätbara resultat.', logo: 'trafikverket_100.jpg' },
-      { id: `exp-${Date.now()}-2`, title: 'Systemtekniker', company: 'CGI', years: '2014–2021', desc: 'Tillhandahålla 3:e linjens support för digitala kommunikations- och samarbetsverktyg.\nSäkerställer hög kvalitet genom effektiv kundservice, teknisk problemlösning och självständiga beslut utifrån mätbara resultat.', logo: 'cgi_100.jpg' },
-      { id: `exp-${Date.now()}-3`, title: 'Teknisk supportspecialist', company: 'Hewlett-Packard', years: '2011–2013', desc: 'Stödde hårdvaruinstallationer, förbättrade effektivitet med 20%\nSamarbetade med ingenjörer för att lösa komplexa fel', logo: 'hewlett_100.jpg' }
+      { id: `exp-${Date.now()}-1`, title: 'Systemtekniker', company: 'Trafikverket', years: '2021 - Nuvarande', desc: 'Beskriv här kort din roll och dina huvudsakliga ansvarsområden.\nNämn dina viktigaste prestationer eller projekt som du bidragit till.\nFyll i med relevant erfarenhet som stöder din ansökan.', logo: 'trafikverket_100.jpg' },
+      { id: `exp-${Date.now()}-2`, title: 'Systemtekniker', company: 'CGI', years: '2014–2021', desc: 'Beskriv här kort din roll och dina huvudsakliga ansvarsområden.\nNämn dina viktigaste prestationer eller projekt som du bidragit till.\nFyll i med relevant erfarenhet som stöder din ansökan.', logo: 'cgi_100.jpg' },
+      { id: `exp-${Date.now()}-3`, title: 'Teknisk supportspecialist', company: 'Hewlett-Packard', years: '2011–2013', desc: 'Beskriv här kort din roll och dina huvudsakliga ansvarsområden.\nNämn dina viktigaste prestationer eller projekt som du bidragit till.\nFyll i med relevant erfarenhet som stöder din ansökan.', logo: 'hewlett_100.jpg' }
     ],
-    education: [{ id: `edu-${Date.now()}-1`, degree: "Kandidatexamen i datavetenskap", school: "Demo Universitetet, Stockholm", years: "2008-2011" }],
-    skills: ['Ledarskap', 'Support', 'Projektledning', 'Applikationer', 'Drift', 'Service'],
-    certs: ['IT-Säkerhetscertifiering', 'Projektledning', 'ITIL', 'Microsoft Exchange', 'Pexip', 'Skype for Business'],
+    education: [{ id: `edu-${Date.now()}-1`, degree: "Datavetenskap", school: "Hogwarts University", years: "2008-2011" }],
+    skills: ['Problemlösning', 'Kommunikation', 'Samarbetsförmåga', 'Kritiskt tänkande', 'Kreativitet', 'Initiativtagande'],
+    certs: ['Hogwarts Diploma', 'House Cup Award', 'Hogwarts Honours'],
     languages: ['Svenska (Modersmål)', 'Engelska (C1)']
   };
 
