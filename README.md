@@ -21,7 +21,7 @@ Projektet är byggt med ren HTML, CSS och JavaScript, utan behov av externa ramv
 
 🖱️ Intuitivt Gränssnitt: Enkel och ren sidopanel som gör redigeringen smidig och överskådlig.
 
-Detta projekt är licensierat under MIT-licensen. Se filen [LICENSE](https://github.com/Reuterkloo/SnabbCV/blob/main/LICENSE) "LICENSE") för mer information.
+Detta projekt är licensierat under MIT-licensen. Se filen [LICENSE](https://github.com/Reuterkloo/SnabbCV/blob/main/LICENSE) för mer information.
 
 
 
