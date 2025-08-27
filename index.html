@@ -3,34 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SnabbCV</title>
+  <title>SnabbCV - Bygg ditt CV på minuter</title>
   
   <link rel="icon" type="image/png" href="favicon.png">
   
+  <!-- External Libraries -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  
+  <!-- Local Files -->
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
   <div class="container">
     <div class="sidebar">
-      <!-- ACCORDION STRUCTURE -->
+      <!-- Accordion: Personal Info -->
       <details id="accordion-personal" open>
         <summary><h2><i class="fas fa-user"></i>Personlig Info</h2></summary>
         <div class="accordion-content">
           <input type="text" id="nameInput" placeholder="Namn">
           <input type="email" id="emailInput" placeholder="E-post">
           <input type="tel" id="phoneInput" placeholder="Telefon">
-          <textarea id="profileInput" placeholder="Profiltext (max 500 tecken)"></textarea>
+          <input type="url" id="linkedinInput" placeholder="LinkedIn URL (valfritt)">
+          <textarea id="profileInput" placeholder="Profiltext (max 500 tecken)" maxlength="500"></textarea>
           <div id="charCount">0/500 tecken</div>
+          <label for="photoInput" class="file-label">Välj profilbild...</label>
           <input type="file" id="photoInput" accept="image/*">
           <div class="hint">Ladda upp din profilbild här.</div>
         </div>
       </details>
 
+      <!-- Accordion: Work Experience -->
       <details id="accordion-experience">
         <summary><h2><i class="fas fa-briefcase"></i>Arbetslivserfarenhet</h2></summary>
         <div class="accordion-content">
@@ -38,11 +44,13 @@
           <input type="text" id="expCompanyInput" placeholder="Företag">
           <input type="text" id="expYearsInput" placeholder="År (t.ex. 2020 - Nuvarande)">
           <textarea id="expDescInput" placeholder="Beskrivning (en punkt per rad)"></textarea>
+          <label for="expLogoInput" class="file-label">Välj företagslogo...</label>
           <input type="file" id="expLogoInput" accept="image/*">
           <button id="addExperienceBtn">Lägg till erfarenhet</button>
         </div>
       </details>
 
+      <!-- Accordion: Education -->
       <details id="accordion-education">
         <summary><h2><i class="fas fa-graduation-cap"></i>Utbildning</h2></summary>
         <div class="accordion-content">
@@ -53,6 +61,7 @@
         </div>
       </details>
 
+      <!-- Accordion: Skills -->
       <details id="accordion-skills">
         <summary><h2><i class="fas fa-tools"></i>Färdigheter</h2></summary>
         <div class="accordion-content">
@@ -61,6 +70,7 @@
         </div>
       </details>
 
+      <!-- Accordion: Certifications -->
       <details id="accordion-certs">
         <summary><h2><i class="fas fa-certificate"></i>Behörigheter</h2></summary>
         <div class="accordion-content">
@@ -69,59 +79,93 @@
         </div>
       </details>
 
+      <!-- Accordion: Languages -->
       <details id="accordion-languages">
         <summary><h2><i class="fas fa-language"></i>Språk</h2></summary>
         <div class="accordion-content">
           <input type="text" id="languageInput" placeholder="Ange språk (t.ex. Tyska)">
-          <select id="languageLevel"><option value="Modersmål">Modersmål</option><option value="A1">A1</option><option value="B1">B1</option><option value="C1">C1</option></select>
+          <select id="languageLevel">
+              <option value="Modersmål">Modersmål (Native)</option>
+              <option value="Flytande">Flytande (Fluent)</option>
+              <option value="C2">C2 (Mastery)</option>
+              <option value="C1">C1 (Advanced)</option>
+              <option value="B2">B2 (Upper-Intermediate)</option>
+              <option value="B1">B1 (Intermediate)</option>
+              <option value="A2">A2 (Elementary)</option>
+              <option value="A1">A1 (Beginner)</option>
+          </select>
           <button id="addLanguageBtn">Lägg till språk</button>
         </div>
       </details>
       
+      <!-- Accordion: Appearance & Template -->
       <details id="accordion-theme">
-        <summary><h2><i class="fas fa-palette"></i>Utseende & Tema</h2></summary>
+        <summary><h2><i class="fas fa-palette"></i>Utseende & Mall</h2></summary>
         <div class="accordion-content">
+           <label for="themeSelect">Välj en mall:</label>
            <select id="themeSelect">
-              <option value="theme-blue">Blå (Standard)</option>
-              <option value="theme-green">Grön</option>
-              <option value="theme-orange">Orange</option>
-              <option value="theme-graphite">Grafit (Mörkgrå)</option>
-              <option value="theme-terminal">Neongrön (IT)</option>
-              <option value="theme-synthwave">Magenta (IT)</option>
-              <option value="theme-solarized">Guld (Varm)</option>
-              <option value="theme-glitch">Cyan (IT)</option>
+              <option value="theme-modern-teal">[V1.1] Modern Turkos (Standard)</option>
+              <option value="theme-modern-blue">[V1.1] Modern Blå</option>
+              <option value="theme-modern-green">[V1.1] Modern Grön</option>
+              <option value="theme-modern-orange">[V1.1] Modern Orange</option>
+              <option value="theme-modern-maroon">[V1.1] Modern Vinröd</option>
+              <option value="theme-modern-graphite">[V1.1] Modern Grafit</option>
+              <option value="theme-professional-blue">[V1.0] Professionell Blå</option>
+              <option value="theme-professional-green">[V1.0] Professionell Grön</option>
+              <option value="theme-professional-gray">[V1.0] Professionell Grå</option>
             </select>
+            <div class="layout-control">
+              <input type="checkbox" id="layoutToggle">
+              <label for="layoutToggle">Växla sida för Färdigheter / Behörigheter / Språk</label>
+            </div>
         </div>
       </details>
 
+      <!-- Accordion: Actions & Export -->
        <details id="accordion-actions">
         <summary><h2><i class="fas fa-cog"></i>Åtgärder & Exportera</h2></summary>
         <div class="accordion-content action-buttons">
-          <button id="exportPdfBtn">Exportera PDF</button>
-          <button id="exportJsonBtn">Exportera data</button>
+          <button id="exportPdfBtn" title="Exportera som PDF"><i class="fas fa-file-pdf"></i> PDF</button>
+          <button id="exportJsonBtn" title="Exportera datafil"><i class="fas fa-file-download"></i> Spara</button>
           <input type="file" id="importJsonInput" accept=".json" style="display:none;">
-          <button id="importJsonBtn">Importera data</button>
+          <button id="importJsonBtn" title="Importera datafil"><i class="fas fa-file-upload"></i> Ladda</button>
         </div>
       </details>
     </div>
 
-    <div class="cv-container" id="cv-preview">
-      <div class="cv-header-bar"></div>
-      <div class="cv-footer-bar"></div>
-      <div class="cv-header">
-        <div class="profile-info">
-          <h1 id="previewName">Ditt namn</h1>
-          <p><i class="fas fa-envelope"></i> <a id="previewEmail" href="#">E-post</a> | <i class="fas fa-phone"></i> <a id="previewPhone" href="#">Telefon</a></p>
+    <!-- CV Preview Area -->
+    <div class="cv-preview-wrapper">
+        <div class="cv-container" id="cv-preview">
+            <!-- Header Section -->
+            <div class="cv-header">
+                <div class="profile-info">
+                    <h1 id="previewName">Ditt namn</h1>
+                    <p id="previewProfile">Din profiltext visas här...</p>
+                </div>
+                <div class="profile-pic-container">
+                    <img id="previewProfilePic" src="profile_photo.png" alt="Profilbild">
+                </div>
+            </div>
+            <!-- Contact Information Bar -->
+            <div class="contact-info">
+                <a id="previewEmail" href="#"><i class="fas fa-envelope"></i> <span>E-post</span></a>
+                <a id="previewPhone" href="#"><i class="fas fa-phone"></i> <span>Telefon</span></a>
+                <a id="previewLinkedin" href="#"><i class="fab fa-linkedin"></i> <span></span></a>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="cv-content">
+                <div class="left-column">
+                    <div class="cv-section" id="skills-section"><h3>Färdigheter</h3><div id="previewSkills"></div></div>
+                    <div class="cv-section" id="certs-section"><h3>Behörigheter</h3><ul id="previewCerts"></ul></div>
+                    <div class="cv-section" id="languages-section"><h3>Språk</h3><ul id="previewLanguages"></ul></div>
+                </div>
+                <div class="right-column">
+                    <div class="cv-section" id="experience-section"><h3>Arbetslivserfarenhet</h3><div id="previewExperience"></div></div>
+                    <div class="cv-section" id="education-section"><h3>Utbildning</h3><div id="previewEducation"></div></div>
+                </div>
+            </div>
         </div>
-        <div class="profile-pic-container">
-          <img id="previewProfilePic" src="" alt="Profilbild">
-        </div>
-      </div>
-      <div id="previewProfile">Din profiltext visas här.</div>
-      <div class="cv-content">
-        <div class="left-column"><div class="cv-section"><h3>Arbetslivserfarenhet</h3><div id="previewExperience"></div></div><div class="cv-section"><h3>Utbildning</h3><div id="previewEducation"></div></div></div>
-        <div class="right-column"><div class="cv-section"><h3>Färdigheter</h3><div id="previewSkills"></div></div><div class="cv-section"><h3>Behörigheter</h3><ul id="previewCerts"></ul></div><div class="cv-section"><h3>Språk</h3><ul id="previewLanguages"></ul></div></div>
-      </div>
     </div>
   </div>
 </body>
