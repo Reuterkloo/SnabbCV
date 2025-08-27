@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
       { id: `exp-${Date.now()}-2`, title: 'Systemtekniker', company: 'CGI', years: '2014–2021', desc: 'Beskriv här kort din roll och dina huvudsakliga ansvarsområden.\nNämn dina viktigaste prestationer eller projekt som du bidragit till.\nFyll i med relevant erfarenhet som stöder din ansökan.', logo: 'cgi_100.jpg' },
       { id: `exp-${Date.now()}-3`, title: 'Teknisk supportspecialist', company: 'Hewlett-Packard', years: '2011–2013', desc: 'Beskriv här kort din roll och dina huvudsakliga ansvarsområden.\nNämn dina viktigaste prestationer eller projekt som du bidragit till.\nFyll i med relevant erfarenhet som stöder din ansökan.', logo: 'hewlett_100.jpg' }
     ],
-    education: [{ id: `edu-${Date.now()}-1`, degree: "Datavetenskap", school: "Hogwarts University", years: "2008-2011" }],
+    education: [{ id: `edu-${Date.now()}-1`, degree: "Datavetenskap", school: "Hogwarts University", years: "2008 - 2011" }],
     skills: ['Problemlösning', 'Kommunikation', 'Samarbetsförmåga', 'Kritiskt tänkande', 'Kreativitet', 'Initiativtagande'],
     certs: ['Hogwarts Diploma', 'House Cup Award', 'Hogwarts Honours'],
     languages: ['Svenska (Modersmål)', 'Engelska (C1)']
