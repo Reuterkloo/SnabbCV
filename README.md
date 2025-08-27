@@ -2,7 +2,7 @@ SnabbCV - Ett webbaserat och dynamiskt verktyg för att snabbt och enkelt skapa 
 
 Projektet är byggt med ren HTML, CSS och JavaScript, utan behov av externa ramverk.
 
-[➡️ Klicka här för att testa live-versionen!]([url](https://reuterkloo.github.io/SnabbCV/))
+➡️ [Klicka här för att testa live-versionen!]([url](https://reuterkloo.github.io/SnabbCV/))
 
 <img width="1262" height="1142" alt="image" src="https://github.com/user-attachments/assets/138b8a15-85e3-44d4-9ae1-dbd8603ba4be" />
 
