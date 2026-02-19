@@ -28,7 +28,7 @@ const INITIAL_DATA = {
         phone: '070-123 45 67',
         linkedin: 'https://www.linkedin.com/in/richard-reuterkloo/',
         website: 'www.reuterkloo.com',
-        profile: 'Lösningsorienterad med fokus på samarbete och innovation. Min drivkraft är att ständigt utvecklas och lära nytt. Detta gratis hobbyprojekt är skapat för att hjälpa dig lyckas i ditt arbetssökande. (Observera att erfarenheter nedan endast är demonstrationsexempel.)',
+        profile: 'Lösningsorienterad med fokus på samarbete och innovation. Min drivkraft är att ständigt utvecklas och lära nytt. Detta gratis hobbyprojekt är skapat för att du enkelt ska kunna bygga ett snyggt CV som sticker ut. (Observera att erfarenheter nedan endast är demonstrationsexempel.)',
         photo: 'https://reuterkloo.com/rr.jpeg',
         photoSettings: { zoom: 1, x: 50, y: 50, shape: 'circle' },
         headerImage: 'https://i0.wp.com/linkedinheaders.com/wp-content/uploads/2018/02/skyscrapers-header.jpg?ssl=1'
