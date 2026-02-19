@@ -1,28 +1,58 @@
-SnabbCV - Ett webbaserat och dynamiskt verktyg för att snabbt och enkelt skapa professionella och stilrena CV:n.
+SnabbCV — 2026 Edition (v2.0)
 
-Projektet är byggt med ren HTML, CSS och JavaScript, utan behov av externa ramverk.
+Ett webbaserat verktyg för att snabbt skapa professionella och stilrena CV:n.
 
-➡️ [Klicka här för att testa live-versionen!](https://reuterkloo.github.io/SnabbCV/ "SnabbCV")
+SnabbCV gör CV-skapande enkelt, snabbt och intuitivt direkt i webbläsaren.
+All bearbetning sker lokalt — inget sparas centralt och ingen data laddas upp till externa servrar.
 
-<img width="1262" height="1142" alt="image" src="https://github.com/user-attachments/assets/138b8a15-85e3-44d4-9ae1-dbd8603ba4be" />
+Byggt i ren HTML, CSS och JavaScript, utan externa ramverk, med fokus på prestanda och ett rent nordiskt designspråk.
 
-# FUNKTIONER
-⚡ Realtidsförhandsgranskning: Se ditt CV uppdateras omedelbart medan du fyller i dina uppgifter.
+➡️ Testa live: https://reuterkloo.github.io/SnabbCV/
 
-🎨 Flera Teman: Välj mellan flera professionella och kreativa teman (inklusive IT-inspirerade mörka teman) för att anpassa utseendet.
+✨ Nytt i v2.0 (2026 Edition)
 
-✏️ Klick-för-att-Redigera: Klicka på redigeringsikonen direkt i förhandsgranskningen för att snabbt öppna rätt fält i redigeringspanelen.
+Fler layoutalternativ och förbättrade teman
 
-📄 Exportera till PDF: Spara ditt färdiga CV som en högkvalitativ PDF-fil med ett enda klick.
+Utökad design- och strukturkontroll
 
-💾 Spara & Ladda Data: Exportera all din data som en JSON-fil för att spara dina framsteg och importera den senare för att fortsätta arbeta.
+Förbättrad PDF-export
 
-📱 Responsiv Design: Gränssnittet är anpassat för att fungera lika bra på datorn som på mindre skärmar.
+Snabbare och smartare redigeringsflöde
 
-🖱️ Intuitivt Gränssnitt: Enkel och ren sidopanel som gör redigeringen smidig och överskådlig.
+Stabilare datahantering och import/export
 
-Detta projekt är licensierat under MIT-licensen. Se filen [LICENSE](https://github.com/Reuterkloo/SnabbCV/blob/main/LICENSE) för mer information.
+🚀 Funktioner
 
+⚡ Realtidsförhandsgranskning medan du redigerar
 
+🎨 Flera professionella teman
+
+✏️ Klick-för-att-redigera direkt i förhandsgranskningen
+
+📄 Export till högkvalitativ PDF
+
+💾 Spara och ladda CV-data via JSON
+
+🖥️ Optimerad för desktop-användning
+
+🖱️ Enkelt och intuitivt redigeringsgränssnitt
+
+📈 Versionshistorik
+
+v1.0 — 24 augusti 2025
+
+v2.0 (2026 Edition) — 19 februari 2026
+
+🧩 Teknik
+
+Ren HTML, CSS & JavaScript
+
+Ingen backend krävs
+
+Körs helt i webbläsaren
+
+📄 Licens
+
+MIT License — se LICENSE för detaljer.
 
 Skapad av Richard Reuterkloo
