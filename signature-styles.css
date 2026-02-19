@@ -1,0 +1,161 @@
+/* 
+   Header Styles (Elegans, Modern, etc.) have been removed.
+   This file is kept to avoid broken links in index.html.
+*/
+
+.style-swatch {
+    width: 2.2rem !important;
+    height: 2.2rem !important;
+    border-radius: 50% !important;
+    border: 2px solid white !important;
+    box-shadow: 0 0 0 1px var(--border-subtle) !important;
+    cursor: pointer;
+    overflow: hidden;
+    padding: 0 !important;
+    margin: 0 !important;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: #f8fafc;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.style-swatch:hover {
+    transform: scale(1.15) !important;
+    box-shadow: 0 0 0 1px var(--accent-blue) !important;
+    z-index: 2;
+}
+
+.style-swatch.active {
+    box-shadow: 0 0 0 2px var(--accent-blue) !important;
+    transform: scale(1.1) !important;
+}
+
+.style-swatch.active::after {
+    content: '\f00c';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    color: var(--accent-blue);
+    font-size: 0.65rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    z-index: 5;
+}
+
+.style-preview {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Previews for buttons */
+.style-preview.solid {
+    background: #cbd5e1;
+}
+
+.style-preview.elegans {
+    background: linear-gradient(135deg, #64748b, #cbd5e1);
+}
+
+.style-preview.modern {
+    background: #64748b;
+    background-image:
+        radial-gradient(at 0% 0%, rgba(255, 255, 255, 0.4) 0, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(0, 0, 0, 0.2) 0, transparent 50%);
+}
+
+.style-preview.studio {
+    background: #94a3b8;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.style-preview.aurora {
+    background: linear-gradient(215deg, #4f46e5 0%, #3b82f6 50%, #10b981 100%);
+    opacity: 0.8;
+}
+
+.style-preview.monochrome {
+    background: #334155;
+    filter: grayscale(1);
+}
+
+.style-preview.sepia {
+    background: #78350f;
+    filter: sepia(1);
+}
+
+.style-preview.noir {
+    background: #000000;
+    filter: grayscale(1) contrast(1.4);
+}
+
+/* Header Application Classes - Real DOM overlay for PDF compatibility */
+.header-style-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    pointer-events: none;
+    z-index: 1 !important;
+    /* Default: invisible */
+}
+
+.cv-header.style-elegans .header-style-overlay {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.1) 100%);
+}
+
+.cv-header.style-modern .header-style-overlay {
+    background-image:
+        radial-gradient(at 0% 0%, rgba(255, 255, 255, 0.2) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(255, 255, 255, 0.1) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(0, 0, 0, 0.1) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(255, 255, 255, 0.1) 0px, transparent 50%);
+}
+
+.cv-header.style-studio .header-style-overlay {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cv-header.style-aurora .header-style-overlay {
+    background: linear-gradient(215deg, rgba(79, 70, 229, 0.5) 0%, rgba(59, 130, 246, 0.45) 50%, rgba(16, 185, 129, 0.4) 100%);
+    mix-blend-mode: overlay;
+}
+
+.cv-header.style-monochrome .header-style-overlay {
+    background: rgba(0, 0, 0, 0);
+    /* Use a grayscale canvas filter when baking for PDF — see script.js */
+    /* For live preview, approximate with a desaturate tint */
+    backdrop-filter: grayscale(100%);
+    -webkit-backdrop-filter: grayscale(100%);
+}
+
+.cv-header.style-sepia .header-style-overlay {
+    background: rgba(112, 66, 20, 0.35);
+    mix-blend-mode: color;
+}
+
+.cv-header.style-noir .header-style-overlay {
+    /* Deep dark vignette */
+    background: rgba(0, 0, 0, 0.55);
+}
+
+/* Ensure header content is above the overlay */
+.cv-header>* {
+    position: relative;
+    z-index: 10;
+}
+
+.cv-header>.header-style-overlay {
+    z-index: 1;
+}

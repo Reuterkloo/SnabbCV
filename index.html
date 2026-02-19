@@ -1,172 +1,672 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SnabbCV - Bygg ditt CV på minuter</title>
-  
+
   <link rel="icon" type="image/png" href="favicon.png">
-  
+
+  <!-- SEO Metadata -->
+  <meta name="description"
+    content="SnabbCV - Bygg ett professionellt CV på minuter helt gratis. Dina uppgifter sparas endast lokalt i din webbläsare.">
+  <meta name="keywords" content="CV, CV-mall, meritförteckning, CV-byggare, gratis CV, SnabbCV">
+  <meta name="author" content="Richard Reuterkloo">
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content="SnabbCV - Bygg ditt CV på minuter">
+  <meta property="og:description"
+    content="Ett webbaserat och dynamiskt verktyg för att snabbt skapa professionella CV:n. Ingen data skickas till servrar.">
+  <meta property="og:image" content="https://reuterkloo.github.io/SnabbCV/favicon.png">
+  <meta property="og:url" content="https://reuterkloo.github.io/SnabbCV/">
+  <meta property="og:type" content="website">
+
   <!-- External Libraries -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <!-- External Libraries -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&family=Playfair+Display:wght@400;700&family=Lora:wght@400;600&family=Outfit:wght@400;600;700&family=Poppins:wght@400;500;600&family=Sora:wght@400;600;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <!-- Bootstrap Script: Prevent Flash of Unstyled Content (FOUC) -->
+  <script>
+    (function () {
+      const defaultHeaderImage = 'https://i0.wp.com/linkedinheaders.com/wp-content/uploads/2018/02/skyscrapers-header.jpg?ssl=1';
+      const savedImage = localStorage.getItem('cvBuilderHeaderImage') || defaultHeaderImage;
+      const savedStyle = localStorage.getItem('cvBuilderHeaderStyle') || 'solid';
+      const savedTheme = localStorage.getItem('cvBuilderTheme') || 'theme-modern-graphite';
+
+      // 1. Apply Theme Early (on <html> for immediate variable availability)
+      if (savedTheme !== 'custom') {
+        document.documentElement.classList.add(savedTheme);
+      } else {
+        const customHex = localStorage.getItem('cvBuilderCustomColor');
+        if (customHex) {
+          document.documentElement.style.setProperty('--theme-color', customHex);
+          const r = parseInt(customHex.slice(1, 3), 16), g = parseInt(customHex.slice(3, 5), 16), b = parseInt(customHex.slice(5, 7), 16);
+          document.documentElement.style.setProperty('--theme-light', `rgba(${r},${g},${b}, 0.1)`);
+        }
+      }
+
+      // 2. Inject Critical Header Styles
+      let headerCss = "";
+      if (savedImage !== 'none') headerCss += `.cv-header { background-image: url('${savedImage}'); }`;
+      if (savedStyle !== 'solid' || savedImage !== 'none') {
+        headerCss += `.cv-header { margin: -10mm -10mm 6mm -10mm !important; padding: 15mm 10mm 12mm 10mm !important; }
+                      .profile-info { text-align: center !important; }
+                      #previewProfile { max-width: 85% !important; margin: 2mm auto 0 auto !important; text-align: center !important; }`;
+      }
+      if (headerCss) {
+        const style = document.createElement('style');
+        style.innerHTML = headerCss;
+        document.head.appendChild(style);
+      }
+    })();
+  </script>
+
   <!-- Local Files -->
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="signature-styles.css">
   <script src="script.js" defer></script>
 </head>
+
 <body>
-  <div class="container">
-    <div class="sidebar">
-      <!-- Accordion: Personal Info -->
-      <details id="accordion-personal" open>
-        <summary><h2><i class="fas fa-user"></i>Personlig Info</h2></summary>
-        <div class="accordion-content">
-          <input type="text" id="nameInput" placeholder="Namn">
-          <input type="email" id="emailInput" placeholder="E-post">
-          <input type="tel" id="phoneInput" placeholder="Telefon">
-          <input type="url" id="linkedinInput" placeholder="LinkedIn URL (valfritt)">
-          <textarea id="profileInput" placeholder="Profiltext (max 500 tecken)" maxlength="500"></textarea>
-          <div id="charCount">0/500 tecken</div>
-          <label for="photoInput" class="file-label">Välj profilbild...</label>
-          <input type="file" id="photoInput" accept="image/*">
-          <div class="hint">Ladda upp din profilbild här.</div>
-        </div>
-      </details>
 
-      <!-- Accordion: Work Experience -->
-      <details id="accordion-experience">
-        <summary><h2><i class="fas fa-briefcase"></i>Arbetslivserfarenhet</h2></summary>
-        <div class="accordion-content">
-          <input type="text" id="expTitleInput" placeholder="Jobbtitel">
-          <input type="text" id="expCompanyInput" placeholder="Företag">
-          <input type="text" id="expYearsInput" placeholder="År (t.ex. 2020 - Nuvarande)">
-          <textarea id="expDescInput" placeholder="Beskrivning (en punkt per rad)"></textarea>
-          <label for="expLogoInput" class="file-label">Välj företagslogo...</label>
-          <input type="file" id="expLogoInput" accept="image/*">
-          <button id="addExperienceBtn">Lägg till erfarenhet</button>
-        </div>
-      </details>
 
-      <!-- Accordion: Education -->
-      <details id="accordion-education">
-        <summary><h2><i class="fas fa-graduation-cap"></i>Utbildning</h2></summary>
-        <div class="accordion-content">
-          <input type="text" id="eduDegreeInput" placeholder="Examen">
-          <input type="text" id="eduSchoolInput" placeholder="Skola">
-          <input type="text" id="eduYearsInput" placeholder="År (valfritt)">
-          <button id="addEducationBtn">Lägg till utbildning</button>
-        </div>
-      </details>
-
-      <!-- Accordion: Skills -->
-      <details id="accordion-skills">
-        <summary><h2><i class="fas fa-tools"></i>Färdigheter</h2></summary>
-        <div class="accordion-content">
-          <input type="text" id="skillInput" placeholder="Färdighet">
-          <button id="addSkillBtn">Lägg till färdighet</button>
-        </div>
-      </details>
-
-      <!-- Accordion: Certifications -->
-      <details id="accordion-certs">
-        <summary><h2><i class="fas fa-certificate"></i>Behörigheter</h2></summary>
-        <div class="accordion-content">
-          <input type="text" id="certInput" placeholder="Behörighet">
-          <button id="addCertBtn">Lägg till behörighet</button>
-        </div>
-      </details>
-
-      <!-- Accordion: Languages -->
-      <details id="accordion-languages">
-        <summary><h2><i class="fas fa-language"></i>Språk</h2></summary>
-        <div class="accordion-content">
-          <input type="text" id="languageInput" placeholder="Ange språk (t.ex. Tyska)">
-          <select id="languageLevel">
-              <option value="Modersmål">Modersmål (Native)</option>
-              <option value="Flytande">Flytande (Fluent)</option>
-              <option value="C2">C2 (Mastery)</option>
-              <option value="C1">C1 (Advanced)</option>
-              <option value="B2">B2 (Upper-Intermediate)</option>
-              <option value="B1">B1 (Intermediate)</option>
-              <option value="A2">A2 (Elementary)</option>
-              <option value="A1">A1 (Beginner)</option>
-          </select>
-          <button id="addLanguageBtn">Lägg till språk</button>
-        </div>
-      </details>
-      
-      <!-- Accordion: Appearance & Template -->
-      <details id="accordion-theme">
-        <summary><h2><i class="fas fa-palette"></i>Utseende & Mall</h2></summary>
-        <div class="accordion-content">
-           <label for="themeSelect">Välj en mall:</label>
-           <select id="themeSelect">
-              <option value="theme-modern-teal">[V1.1] Modern Turkos (Standard)</option>
-              <option value="theme-modern-blue">[V1.1] Modern Blå</option>
-              <option value="theme-modern-green">[V1.1] Modern Grön</option>
-              <option value="theme-modern-orange">[V1.1] Modern Orange</option>
-              <option value="theme-modern-maroon">[V1.1] Modern Vinröd</option>
-              <option value="theme-modern-graphite">[V1.1] Modern Grafit</option>
-              <option value="theme-professional-blue">[V1.0] Professionell Blå</option>
-              <option value="theme-professional-green">[V1.0] Professionell Grön</option>
-              <option value="theme-professional-gray">[V1.0] Professionell Grå</option>
-            </select>
-            <div class="layout-control">
-              <input type="checkbox" id="layoutToggle">
-              <label for="layoutToggle">Växla sida för Färdigheter / Behörigheter / Språk</label>
+  <main class="main-wrapper">
+    <div class="container">
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <div class="brand">
+            <i class="fas fa-layer-group"></i>
+            <span>SnabbCV Studio</span>
+            <div class="help-tooltip-wrapper">
+              <i class="fas fa-question-circle help-icon"></i>
+              <div class="tooltip-content">
+                <strong>Om SnabbCV Studio</strong>
+                <p style="margin-bottom: 0.75rem;">Ett professionellt verktyg för att skapa snygga meritförteckningar
+                  direkt i din webbläsare. Snabbt, säkert och helt privat.</p>
+                <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 0.5rem; margin-top: 0.5rem;">
+                  <p style="font-size: 0.75rem; opacity: 0.8; line-height: 1.4;">
+                    Utvecklat med ren <strong>HTML, CSS & JavaScript</strong> – optimerat för statisk hosting på GitHub.
+                  </p>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-      </details>
 
-      <!-- Accordion: Actions & Export -->
-       <details id="accordion-actions">
-        <summary><h2><i class="fas fa-cog"></i>Åtgärder & Exportera</h2></summary>
-        <div class="accordion-content action-buttons">
-          <button id="exportPdfBtn" title="Exportera som PDF"><i class="fas fa-file-pdf"></i> PDF</button>
-          <button id="exportJsonBtn" title="Exportera datafil"><i class="fas fa-file-download"></i> Spara</button>
-          <input type="file" id="importJsonInput" accept=".json" style="display:none;">
-          <button id="importJsonBtn" title="Importera datafil"><i class="fas fa-file-upload"></i> Ladda</button>
-        </div>
-      </details>
-    </div>
+        <div class="sidebar-content">
+          <!-- New: Get Started Guide -->
+          <!-- Studio Mode: Removed Onboarding Card for cleaner look -->
 
-    <!-- CV Preview Area -->
-    <div class="cv-preview-wrapper">
+          <!-- Accordion: Appearance & Template (Moved to Top) -->
+          <details id="accordion-theme">
+            <summary>
+              <h2><i class="fas fa-palette"></i>Utseende & Mall</h2>
+            </summary>
+            <div class="accordion-content">
+              <label>Bakgrundsbild:</label>
+              <div class="theme-image-grid" id="headerImageSwatches">
+                <button class="image-swatch active"
+                  data-image="https://i0.wp.com/linkedinheaders.com/wp-content/uploads/2018/02/skyscrapers-header.jpg?ssl=1"
+                  data-adaptive-theme="theme-modern-blue"
+                  style="background-image: url('https://i0.wp.com/linkedinheaders.com/wp-content/uploads/2018/02/skyscrapers-header.jpg?ssl=1');"
+                  title="Skyskrapor"></button>
+                <button class="image-swatch"
+                  data-image="https://i0.wp.com/linkedinheaders.com/wp-content/uploads/2018/02/snowy-mountain-sunset-header.jpg?resize=1024%2C256&ssl=1"
+                  data-adaptive-theme="theme-modern-orange"
+                  style="background-image: url('https://i0.wp.com/linkedinheaders.com/wp-content/uploads/2018/02/snowy-mountain-sunset-header.jpg?resize=1024%2C256&ssl=1');"
+                  title="Bergssolnedgång"></button>
+                <button class="image-swatch"
+                  data-image="https://i0.wp.com/linkedinheaders.com/wp-content/uploads/2018/02/mountain-lake-header.jpg?resize=1024%2C256&ssl=1"
+                  data-adaptive-theme="theme-modern-teal"
+                  style="background-image: url('https://i0.wp.com/linkedinheaders.com/wp-content/uploads/2018/02/mountain-lake-header.jpg?resize=1024%2C256&ssl=1');"
+                  title="Bergsjö"></button>
+                <button class="image-swatch" data-image="https://miro.medium.com/v2/resize:fit:1400/0*Eww7pEGuh5F3K8fm"
+                  data-adaptive-theme="theme-modern-blue"
+                  style="background-image: url('https://miro.medium.com/v2/resize:fit:1400/0*Eww7pEGuh5F3K8fm');"
+                  title="Teknisk Framtid"></button>
+                <button class="image-swatch"
+                  data-image="https://linkedinimagesdotcom.wordpress.com/wp-content/uploads/2016/04/motherboard_2-wallpaper-1920x10801.jpg"
+                  data-adaptive-theme="theme-modern-green"
+                  style="background-image: url('https://linkedinimagesdotcom.wordpress.com/wp-content/uploads/2016/04/motherboard_2-wallpaper-1920x10801.jpg');"
+                  title="Moderkort"></button>
+                <button class="image-swatch"
+                  data-image="https://benten.solutions/wp-content/uploads/2023/02/network-engineer-1500x430.jpg"
+                  data-adaptive-theme="theme-modern-graphite"
+                  style="background-image: url('https://benten.solutions/wp-content/uploads/2023/02/network-engineer-1500x430.jpg');"
+                  title="Nätverksspecialist"></button>
+                <button class="image-swatch"
+                  data-image="https://t4.ftcdn.net/jpg/08/15/31/35/360_F_815313503_v4263CUcuxgDxegRAUE5w0WWIc5JZSsy.jpg"
+                  data-adaptive-theme="theme-modern-blue"
+                  style="background-image: url('https://t4.ftcdn.net/jpg/08/15/31/35/360_F_815313503_v4263CUcuxgDxegRAUE5w0WWIc5JZSsy.jpg');"
+                  title="Digital Värld"></button>
+
+                <div class="image-upload-container">
+                  <label class="image-upload-swatch" for="headerImageInput" title="Ladda upp egen panoramabild">
+                    <i class="fas fa-plus"></i>
+                  </label>
+                  <input type="file" id="headerImageInput" accept="image/*" style="display: none;">
+                </div>
+              </div>
+
+
+              <label style="margin-top: 1rem; display: block;">Färg:</label>
+              <div class="theme-swatch-grid" id="themeSwatches">
+                <button class="swatch" data-theme="theme-modern-teal" style="background-color: #115E59;"
+                  title="Modern Turkos"></button>
+                <button class="swatch" data-theme="theme-modern-blue" style="background-color: #1E40AF;"
+                  title="Kunglig Blå"></button>
+                <button class="swatch" data-theme="theme-modern-green" style="background-color: #064E3B;"
+                  title="Smaragdgrön"></button>
+                <button class="swatch" data-theme="theme-modern-orange" style="background-color: #9A3412;"
+                  title="Bränd Terracotta"></button>
+                <button class="swatch" data-theme="theme-modern-maroon" style="background-color: #701A75;"
+                  title="Djup Björnbär"></button>
+                <button class="swatch" data-theme="theme-modern-graphite" style="background-color: #0F172A;"
+                  title="Nattkol"></button>
+                <button class="swatch" data-theme="theme-modern-indigo" style="background-color: #312E81;"
+                  title="Midnattsindigo"></button>
+
+                <div class="custom-color-container">
+                  <input type="color" id="customColorInput" title="Välj egen färg" aria-label="Välj egen färg">
+                  <i class="fas fa-eye-dropper"></i>
+                </div>
+              </div>
+
+
+              <div class="sidebar-control-group"
+                style="margin-top: 1.5rem; border-top: 1px solid var(--border-subtle); padding-top: 1rem;">
+                <div class="layout-control" style="border-top: none; margin-top: 0; padding: 0;">
+                  <input type="checkbox" id="layoutToggle" aria-label="Växla sida for sidokolumnen">
+                  <label for="layoutToggle">Växla sida för Färdigheter / Behörigheter</label>
+                </div>
+              </div>
+
+            </div>
+          </details>
+
+
+          <!-- Accordion: Profile Photo (New Dedicated Section) -->
+          <details id="accordion-photo">
+            <summary>
+              <h2><i class="fas fa-camera"></i>Profilbild</h2>
+            </summary>
+            <div class="accordion-content">
+              <div class="photo-studio-widget" style="margin-top: 0; border: none; box-shadow: none; padding: 0;">
+
+                <!-- Custom Upload Area -->
+                <div class="studio-upload-area" id="photoDropZone">
+                  <input type="file" id="photoInput" accept="image/*" aria-label="Ladda upp profilbild" hidden>
+                  <label for="photoInput" class="studio-upload-label">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Ladda upp profilbild</span>
+                    <small>Klicka eller dra och släpp</small>
+                  </label>
+                </div>
+
+                <!-- Profile Photo Shapes -->
+                <p class="studio-label"><i class="fas fa-shapes"></i> Ram & Form</p>
+                <div class="shape-grid" id="photoShapeGrid">
+                  <button class="shape-swatch active" data-shape="circle" title="Cirkel">
+                    <div class="shape-preview circle"></div>
+                  </button>
+                  <button class="shape-swatch" data-shape="rounded" title="Avrundad">
+                    <div class="shape-preview rounded"></div>
+                  </button>
+                  <button class="shape-swatch" data-shape="squircle" title="Mjuk kvadrat">
+                    <div class="shape-preview squircle"></div>
+                  </button>
+                  <button class="shape-swatch" data-shape="square" title="Fyrkant">
+                    <div class="shape-preview square"></div>
+                  </button>
+                  <button class="shape-swatch" data-shape="diamond" title="Diamant">
+                    <div class="shape-preview diamond"></div>
+                  </button>
+                </div>
+
+                <!-- Professional Filters -->
+                <p class="studio-label"><i class="fas fa-magic"></i> Professionella Filter</p>
+                <div class="filter-grid" id="photoFilterGrid">
+                  <button class="filter-swatch active" data-filter="none" title="Original">
+                    <div class="filter-preview none"></div>
+                  </button>
+                  <button class="filter-swatch" data-filter="pro-bw" title="Pro B&W">
+                    <div class="filter-preview pro-bw"></div>
+                  </button>
+                  <button class="filter-swatch" data-filter="warm-studio" title="Warm Studio">
+                    <div class="filter-preview warm-studio"></div>
+                  </button>
+                  <button class="filter-swatch" data-filter="soft-pro" title="Soft Professional">
+                    <div class="filter-preview soft-pro"></div>
+                  </button>
+                  <button class="filter-swatch" data-filter="noir" title="Noir Studio">
+                    <div class="filter-preview noir-studio"></div>
+                  </button>
+                </div>
+
+                <!-- Composition Controls -->
+                <p class="studio-label"><i class="fas fa-vector-square"></i> Komposition</p>
+                <div class="studio-composition-pad">
+                  <div class="composition-group">
+                    <label>Zoom</label>
+                    <div class="control-row">
+                      <button class="studio-control-btn" data-action="zoom-out" title="Zooma ut"><i
+                          class="fas fa-minus"></i></button>
+                      <button class="studio-control-btn" data-action="zoom-in" title="Zooma in"><i
+                          class="fas fa-plus"></i></button>
+                    </div>
+                  </div>
+                  <div class="composition-group">
+                    <label>Position</label>
+                    <div class="d-pad">
+                      <button class="studio-control-btn d-up" data-action="pan-up" title="Upp"><i
+                          class="fas fa-chevron-up"></i></button>
+                      <div class="d-mid">
+                        <button class="studio-control-btn d-left" data-action="pan-left" title="Vänster"><i
+                            class="fas fa-chevron-left"></i></button>
+                        <button class="studio-control-btn d-center" data-action="reset" title="Återställ"><i
+                            class="fas fa-redo-alt"></i></button>
+                        <button class="studio-control-btn d-right" data-action="pan-right" title="Höger"><i
+                            class="fas fa-chevron-right"></i></button>
+                      </div>
+                      <button class="studio-control-btn d-down" data-action="pan-down" title="Ner"><i
+                          class="fas fa-chevron-down"></i></button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Hidden inputs for state persistence -->
+                <input type="hidden" id="photoZoom" value="1">
+                <input type="hidden" id="photoX" value="50">
+                <input type="hidden" id="photoY" value="50">
+              </div>
+            </div>
+          </details>
+
+          <!-- Accordion: Personal Info -->
+          <details id="accordion-personal">
+            <summary>
+              <h2><i class="fas fa-user"></i>Personlig Info <span class="progress-dot" id="progress-personal"></span>
+              </h2>
+            </summary>
+            <div class="accordion-content">
+
+              <div class="input-group">
+                <label for="nameInput">Namn</label>
+                <input type="text" id="nameInput" placeholder="Ditt fullständiga namn" aria-label="Ditt namn">
+              </div>
+              <div class="input-group">
+                <label for="emailInput">E-post</label>
+                <input type="email" id="emailInput" placeholder="Ex: richard@demo.com" aria-label="Din e-postadress">
+              </div>
+              <div class="input-group">
+                <label for="phoneInput">Telefon</label>
+                <input type="tel" id="phoneInput" placeholder="Ex: 070-123 45 67" aria-label="Ditt telefonnummer">
+              </div>
+              <div class="input-group">
+                <label for="linkedinInput">LinkedIn URL</label>
+                <input type="url" id="linkedinInput" placeholder="Ex: https://linkedin.com/in/användare"
+                  aria-label="Din LinkedIn-profil">
+              </div>
+              <div class="input-group">
+                <label for="websiteInput">Hemsida / Portfölj</label>
+                <input type="url" id="websiteInput" placeholder="Ex: https://min-sida.se"
+                  aria-label="Din personliga hemsida">
+              </div>
+              <div class="input-group">
+                <label for="profileInput">Profiltext</label>
+                <textarea id="profileInput" placeholder="Berätta kort om dig själv..." maxlength="500"
+                  aria-label="Profilbeskrivning"></textarea>
+                <div id="charCount" aria-live="polite">0/500 tecken</div>
+              </div>
+            </div>
+          </details>
+
+          <!-- Accordion: Work Experience -->
+          <details id="accordion-experience">
+            <summary>
+              <h2><i class="fas fa-briefcase"></i>Arbetslivserfarenhet <span class="progress-dot"
+                  id="progress-experience"></span></h2>
+            </summary>
+            <div class="accordion-content">
+              <div class="form-row">
+                <input type="text" id="expTitleInput" placeholder="Jobbtitel" aria-label="Jobbtitel">
+              </div>
+              <div class="form-row">
+                <input type="text" id="expCompanyInput" placeholder="Företag" aria-label="Företag">
+                <input type="text" id="expLocationInput" placeholder="Ort (t.ex. Stockholm)" aria-label="Ort">
+              </div>
+
+              <div class="input-grid-label">Period</div>
+              <div class="date-grid">
+                <select id="expStartMonth" class="month-select" aria-label="Startmånad">
+                  <option value="">Månad</option>
+                  <option value="Jan">Januari</option>
+                  <option value="Feb">Februari</option>
+                  <option value="Mar">Mars</option>
+                  <option value="Apr">April</option>
+                  <option value="Maj">Maj</option>
+                  <option value="Jun">Juni</option>
+                  <option value="Jul">Juli</option>
+                  <option value="Aug">Augusti</option>
+                  <option value="Sep">September</option>
+                  <option value="Okt">Oktober</option>
+                  <option value="Nov">November</option>
+                  <option value="Dec">December</option>
+                </select>
+                <select id="expStartYear" class="year-select" aria-label="Startår"></select>
+                <span class="date-separator">—</span>
+                <div class="end-date-group">
+                  <select id="expEndMonth" class="month-select" aria-label="Slutmånad">
+                    <option value="">Månad</option>
+                    <option value="Jan">Januari</option>
+                    <option value="Feb">Februari</option>
+                    <option value="Mar">Mars</option>
+                    <option value="Apr">April</option>
+                    <option value="Maj">Maj</option>
+                    <option value="Jun">Juni</option>
+                    <option value="Jul">Juli</option>
+                    <option value="Aug">Augusti</option>
+                    <option value="Sep">September</option>
+                    <option value="Okt">Oktober</option>
+                    <option value="Nov">November</option>
+                    <option value="Dec">December</option>
+                  </select>
+                  <select id="expEndYear" class="year-select" aria-label="Slutår"></select>
+                </div>
+              </div>
+
+              <div class="current-toggle">
+                <input type="checkbox" id="expCurrent">
+                <label for="expCurrent">Nuvarande jobb</label>
+              </div>
+
+              <textarea id="expDescInput" placeholder="Beskrivning av dina arbetsuppgifter..."
+                aria-label="Beskrivning"></textarea>
+
+              <div class="custom-file-upload">
+                <label for="expLogoInput">
+                  <i class="fas fa-building"></i>
+                  <span id="expLogoLabel">Ladda upp företagslogotyp</span>
+                </label>
+                <input type="file" id="expLogoInput" accept="image/*">
+              </div>
+
+              <div class="form-actions">
+                <button id="addExperienceBtn"><i class="fas fa-plus"></i> Spara erfarenhet</button>
+                <button id="sortExperienceBtn" class="secondary-btn" title="Sortera kronologiskt"><i
+                    class="fas fa-sort-amount-down"></i> Sortera automatiskt</button>
+              </div>
+              <ul id="formExperienceList" class="compact-item-list"></ul>
+            </div>
+          </details>
+          <!-- Accordion: Skills -->
+          <details id="accordion-skills">
+            <summary>
+              <h2><i class="fas fa-tools"></i>Färdigheter <span class="progress-dot" id="progress-skills"></span></h2>
+            </summary>
+            <div class="accordion-content">
+              <input type="text" id="skillInput" placeholder="Färdighet (t.ex. Projektledning)"
+                aria-label="Lägg till en färdighet">
+              <button id="addSkillBtn"><i class="fas fa-plus"></i> Lägg till</button>
+              <ul id="sidebarSkillsList" class="sidebar-item-list"></ul>
+            </div>
+          </details>
+
+
+          <!-- Accordion: Certifications -->
+          <details id="accordion-certs">
+            <summary>
+              <h2><i class="fas fa-award"></i>Behörigheter <span class="progress-dot" id="progress-certs"></span></h2>
+            </summary>
+            <div class="accordion-content">
+              <input type="text" id="certInput" placeholder="Behörighet / Certifikat"
+                aria-label="Lägg till en behörighet eller certifikat">
+              <button id="addCertBtn"><i class="fas fa-plus"></i> Lägg till</button>
+              <ul id="sidebarCertsList" class="sidebar-item-list"></ul>
+            </div>
+          </details>
+
+          <!-- Accordion: Languages -->
+          <details id="accordion-languages">
+            <summary>
+              <h2><i class="fas fa-language"></i>Språk <span class="progress-dot" id="progress-languages"></span></h2>
+            </summary>
+            <div class="accordion-content">
+              <div class="search-input-wrapper">
+                <span id="selectedLanguageFlag" class="selected-flag-preview"></span>
+                <input type="text" id="languageInput" placeholder="Sök språk (t.ex. Tyska)"
+                  aria-label="Sök och ange språk">
+                <div id="languageSuggestions" class="search-suggestions"></div>
+              </div>
+              <select id="languageLevel" aria-label="Välj språknivå">
+                <option value="">Välj nivå (valfritt)</option>
+                <option value="Modersmål">Modersmål</option>
+                <option value="Flytande">Flytande</option>
+                <option value="Goda kunskaper">Goda kunskaper</option>
+                <option value="Grundläggande">Grundläggande</option>
+              </select>
+              <button id="addLanguageBtn"><i class="fas fa-plus"></i> Lägg till</button>
+              <ul id="sidebarLanguageList" class="sidebar-item-list"></ul>
+            </div>
+          </details>
+
+          <!-- Accordion: Education (Moved below Languages) -->
+          <details id="accordion-education">
+            <summary>
+              <h2><i class="fas fa-graduation-cap"></i>Utbildning <span class="progress-dot"
+                  id="progress-education"></span>
+              </h2>
+            </summary>
+            <div class="accordion-content">
+              <div class="form-row">
+                <input type="text" id="eduDegreeInput" placeholder="Examen / Utbildningsnamn" aria-label="Examen">
+              </div>
+              <div class="form-row">
+                <input type="text" id="eduSchoolInput" placeholder="Skola / Universitet" aria-label="Skola">
+                <input type="text" id="eduLocationInput" placeholder="Ort" aria-label="Ort">
+              </div>
+
+              <div class="input-grid-label">Period</div>
+              <div class="date-grid">
+                <select id="eduStartMonth" class="month-select" aria-label="Startmånad">
+                  <option value="">Månad</option>
+                  <option value="Jan">Januari</option>
+                  <option value="Feb">Februari</option>
+                  <option value="Mar">Mars</option>
+                  <option value="Apr">April</option>
+                  <option value="Maj">Maj</option>
+                  <option value="Jun">Juni</option>
+                  <option value="Jul">Juli</option>
+                  <option value="Aug">Augusti</option>
+                  <option value="Sep">September</option>
+                  <option value="Okt">Oktober</option>
+                  <option value="Nov">November</option>
+                  <option value="Dec">December</option>
+                </select>
+                <select id="eduStartYear" class="year-select" aria-label="Startår"></select>
+                <span class="date-separator">—</span>
+                <div class="end-date-group">
+                  <select id="eduEndMonth" class="month-select" aria-label="Slutmånad">
+                    <option value="">Månad</option>
+                    <option value="Jan">Januari</option>
+                    <option value="Feb">Februari</option>
+                    <option value="Mar">Mars</option>
+                    <option value="Apr">April</option>
+                    <option value="Maj">Maj</option>
+                    <option value="Jun">Juni</option>
+                    <option value="Jul">Juli</option>
+                    <option value="Aug">Augusti</option>
+                    <option value="Sep">September</option>
+                    <option value="Okt">Oktober</option>
+                    <option value="Nov">November</option>
+                    <option value="Dec">December</option>
+                  </select>
+                  <select id="eduEndYear" class="year-select" aria-label="Slutår"></select>
+                </div>
+              </div>
+
+              <div class="current-toggle">
+                <input type="checkbox" id="eduCurrent">
+                <label for="eduCurrent">Nuvarande studier</label>
+              </div>
+
+              <div class="form-actions">
+                <button id="addEducationBtn"><i class="fas fa-plus"></i> Spara utbildning</button>
+                <button id="sortEducationBtn" class="secondary-btn" title="Sortera kronologiskt"><i
+                    class="fas fa-sort-amount-down"></i> Sortera automatiskt</button>
+              </div>
+              <ul id="formEducationList" class="compact-item-list"></ul>
+            </div>
+          </details>
+
+
+
+          <!-- Accordion: Actions & Export -->
+          <details id="accordion-actions">
+            <summary>
+              <h2><i class="fas fa-cog"></i>Åtgärder & Exportera</h2>
+            </summary>
+            <div class="accordion-content actions-grid">
+              <!-- Grid Step 1: Export PDF -->
+              <div class="action-card primary">
+                <div class="card-icon"><i class="fas fa-file-pdf"></i></div>
+                <div class="card-text">
+                  <h3>Exportera PDF</h3>
+                  <p>Ladda ner ditt färdiga CV för utskrift eller ansökan.</p>
+                </div>
+                <button id="exportPdfBtn" class="card-btn">Ladda ner</button>
+              </div>
+
+              <!-- Grid Step 2: Save Data -->
+              <div class="action-card">
+                <div class="card-icon"><i class="fas fa-save"></i></div>
+                <div class="card-text">
+                  <h3>Spara Data</h3>
+                  <p>Spara din inmatade profil till en fil på din dator.</p>
+                </div>
+                <button id="exportJsonBtn" class="card-btn">Spara fil</button>
+              </div>
+
+              <!-- Grid Step 3: Load Data -->
+              <div class="action-card">
+                <div class="card-icon"><i class="fas fa-upload"></i></div>
+                <div class="card-text">
+                  <h3>Ladda Data</h3>
+                  <p>Läs in en tidigare sparad profilfil (.json).</p>
+                </div>
+                <input type="file" id="importJsonInput" accept=".json" style="display:none;">
+                <button id="importJsonBtn" class="card-btn">Välj fil</button>
+              </div>
+
+              <!-- Grid Step 4: Reset All -->
+              <div class="action-card danger">
+                <div class="card-icon"><i class="fas fa-trash-alt"></i></div>
+                <div class="card-text">
+                  <h3>Nollställ</h3>
+                  <p>Rensa all data och återställ till nystart.</p>
+                </div>
+                <button id="resetDataBtn" class="card-btn">Rensa allt</button>
+              </div>
+            </div>
+          </details>
+        </div> <!-- End sidebar-content -->
+
+        <footer class="site-footer">
+          <div class="footer-inner">
+            <div class="footer-top">
+              <span>&copy; 2026 Richard Reuterkloo</span>
+              <div class="footer-links">
+                <a href="https://www.reuterkloo.com/" target="_blank" rel="noopener noreferrer" class="footer-link"
+                  title="Besök reuterkloo.com">
+                  <i class="fas fa-globe" style="font-size: 0.75rem;"></i>
+                </a>
+                <a href="https://github.com/Reuterkloo/SnabbCV" target="_blank" rel="noopener noreferrer"
+                  class="footer-link" title="Visa källkod på GitHub">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+            <div class="footer-bottom">
+              <p class="privacy-note">
+                <i class="fas fa-shield-alt"></i> Dina uppgifter sparas endast lokalt i din webbläsare.
+              </p>
+            </div>
+          </div>
+        </footer>
+      </div>
+
+      <!-- CV Preview Area -->
+      <div class="cv-preview-wrapper">
         <div class="cv-container" id="cv-preview">
-            <!-- Header Section -->
-            <div class="cv-header">
-                <div class="profile-info">
-                    <h1 id="previewName">Ditt namn</h1>
-                    <p id="previewProfile">Din profiltext visas här...</p>
-                </div>
-                <div class="profile-pic-container">
-                    <img id="previewProfilePic" src="profile_photo.png" alt="Profilbild">
-                </div>
+          <!-- Header Section -->
+          <div class="cv-header" id="previewHeader">
+            <div class="header-style-overlay" id="headerStyleOverlay"></div>
+            <div class="profile-info">
+              <h1 id="previewName">Richard Reuterkloo</h1>
+              <p id="previewProfile">Erfaren och lösningsorienterad professionell med fokus på att skapa värde genom
+                samarbete och innovation. Jag strävar alltid efter att utvecklas och bidra till teamets framgång genom
+                ett proaktivt arbetssätt och stark kommunikationsförmåga. Denna mall är skapad för att hjälpa dig
+                presentera din resa på ett stilrent och professionellt sätt.</p>
             </div>
-            <!-- Contact Information Bar -->
-            <div class="contact-info">
-                <a id="previewEmail" href="#"><i class="fas fa-envelope"></i> <span>E-post</span></a>
-                <a id="previewPhone" href="#"><i class="fas fa-phone"></i> <span>Telefon</span></a>
-                <a id="previewLinkedin" href="#"><i class="fab fa-linkedin"></i> <span></span></a>
+            <div class="profile-pic-container">
+              <img id="previewProfilePic"
+                src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iI2UzZThlZSIvPjwvc3ZnPg=="
+                alt="Profilbild">
+            </div>
+          </div>
+          <!-- Contact Information Bar -->
+          <div class="contact-info">
+            <a id="previewEmail" href="mailto:alex.andersson@exempel.se"><i class="fas fa-envelope"></i>
+              <span>alex.andersson@exempel.se</span></a>
+            <a id="previewPhone" href="tel:070-000 00 00"><i class="fas fa-phone"></i> <span>070-000 00 00</span></a>
+            <a id="previewLinkedin" href="https://linkedin.com/in/alex-andersson"><i class="fab fa-linkedin"></i>
+              <span>linkedin.com/in/alex-andersson</span></a>
+            <a id="previewWebsite" href="#" style="display: none;"><i class="fas fa-globe"></i>
+              <span>min-sida.se</span></a>
+          </div>
+          <!-- Expertise Bar (Full width) -->
+          <div class="cv-section expertise-bar" id="section-skills">
+            <div id="previewSkills"></div>
+          </div>
+
+          <!-- Main Content Grid -->
+          <div class="cv-content">
+            <!-- MAIN CONTENT (EXPERIENCE & PROJECTS) -->
+            <div class="main-column">
+              <div class="cv-section" id="section-experience">
+                <h3>Arbetslivserfarenhet</h3>
+                <div id="previewExperience"></div>
+              </div>
+
+              <div class="cv-section" id="section-education">
+                <h3>Utbildning</h3>
+                <div id="previewEducation"></div>
+              </div>
             </div>
 
-            <!-- Main Content Grid -->
-            <div class="cv-content">
-                <div class="left-column">
-                    <div class="cv-section" id="skills-section"><h3>Färdigheter</h3><div id="previewSkills"></div></div>
-                    <div class="cv-section" id="certs-section"><h3>Behörigheter</h3><ul id="previewCerts"></ul></div>
-                    <div class="cv-section" id="languages-section"><h3>Språk</h3><ul id="previewLanguages"></ul></div>
-                </div>
-                <div class="right-column">
-                    <div class="cv-section" id="experience-section"><h3>Arbetslivserfarenhet</h3><div id="previewExperience"></div></div>
-                    <div class="cv-section" id="education-section"><h3>Utbildning</h3><div id="previewEducation"></div></div>
-                </div>
+            <!-- SIDEBAR (CERTS, LANGUAGES, REFS) -->
+            <div class="sidebar-column">
+              <div class="cv-section" id="section-certs" style="margin-bottom: 2rem;">
+                <h3>Behörigheter</h3>
+                <div id="previewCerts"></div>
+              </div>
+              <div class="cv-section" id="section-languages">
+                <h3>Språk</h3>
+                <div id="previewLanguages"></div>
+              </div>
+
             </div>
+          </div>
         </div>
+      </div>
     </div>
-  </div>
+  </main>
+
 </body>
+
 </html>

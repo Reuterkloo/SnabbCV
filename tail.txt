@@ -1,0 +1,10 @@
+﻿        display: block;
+    }
+
+    .cv-container {
+        box-shadow: none;
+        margin: 0;
+        width: 100%;
+    }
+} 
+
