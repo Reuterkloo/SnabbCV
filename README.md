@@ -9,8 +9,7 @@ Byggt i ren HTML, CSS och JavaScript, utan externa ramverk, med fokus på presta
 
 ➡️ Testa live: https://reuterkloo.github.io/SnabbCV/
 
-<img width="1252" height="1067" alt="image" src="https://github.com/user-attachments/assets/15b8e376-4d12-4beb-beec-565c2326b04c" />
-
+<img width="1245" height="1076" alt="image" src="https://github.com/user-attachments/assets/a01fc951-aacb-40ae-b970-3475655104c1" />
 
 ✨ Nytt i v2.0 (2026 Edition)
 
