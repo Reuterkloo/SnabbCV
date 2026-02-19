@@ -498,6 +498,25 @@ const updateProgressDots = () => {
     if (dots.languages && cvData.languages) dots.languages.classList.toggle('active', cvData.languages.length > 0);
 };
 
+const populateYearSelects = () => {
+    const currentYear = new Date().getFullYear();
+    const startYear = 1960;
+    const selects = document.querySelectorAll('.year-select');
+
+    selects.forEach(select => {
+        // Keep existing options if any (like the default placeholder)
+        // But here we want to ensure we have years.
+        // Let's just reset and add default + years.
+        select.innerHTML = '<option value="">År</option>';
+        for (let i = currentYear; i >= startYear; i--) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            select.appendChild(option);
+        }
+    });
+};
+
 
 // Add event listener for reset button
 document.getElementById('resetDataBtn')?.addEventListener('click', resetData);
@@ -622,6 +641,7 @@ function updateHeaderBaseline() {
 // --- RENDER FUNCTION (THE CORE) ---
 function render() {
     previews.name.textContent = cvData.personal.name || 'Ditt namn';
+    previews.profile.textContent = cvData.personal.profile || '';
     previews.email.querySelector('span').textContent = cvData.personal.email || 'E-post';
     previews.email.href = cvData.personal.email ? `mailto:${cvData.personal.email}` : '#';
     previews.phone.querySelector('span').textContent = cvData.personal.phone || 'Telefon';
@@ -1837,6 +1857,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         updateHeaderBaseline();
+        populateYearSelects(); // Populate year dropdowns
         updateVisibilityUI();
         render();
         updateProgressDots();
